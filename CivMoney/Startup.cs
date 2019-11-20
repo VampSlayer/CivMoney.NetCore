@@ -10,6 +10,7 @@ using AutoMapper;
 using CivMoney.Services;
 using CivMoney.DataAccess;
 using CivMoney.DataAccess.Contracts;
+using System;
 
 namespace CivMoney
 {
@@ -18,15 +19,15 @@ namespace CivMoney
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
-            Environment = environment;
+            Env = environment;
         }
 
         public IConfiguration Configuration { get; }
-        public IWebHostEnvironment Environment { get; }
+        public IWebHostEnvironment Env { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
-            if (Environment.IsDevelopment())
+            if (Env.IsDevelopment())
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -34,7 +35,7 @@ namespace CivMoney
             else
             {
                 services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(Configuration["DATABASE_URL"]));
+                    options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") + ";sslmode=Prefer;Trust Server Certificate=true"));
             }
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
