@@ -8,11 +8,7 @@
   <ItemGroup>
     <None Remove=".gitignore" />
   </ItemGroup>
-  
-  <Target Name="PrePublishTarget" AfterTargets="Publish">
-    <Exec Command="dotnet ef database update" />
-  </Target>
-
+ 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Google.Apis.Oauth2.v2" Version="1.42.0.1602" />
@@ -21,7 +17,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
   </ItemGroup>
   
   <ItemGroup>
