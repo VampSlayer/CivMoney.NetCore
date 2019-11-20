@@ -10,8 +10,6 @@
   </ItemGroup>
   
   <Target Name="PrePublishTarget" AfterTargets="Publish">
-    <Exec Command="dotnet restore" />
-    <Exec Command="dotnet ef" />
     <Exec Command="dotnet ef database update" />
   </Target>
 
@@ -23,6 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.0.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.0.0" />
   </ItemGroup>
   
   <ItemGroup>
