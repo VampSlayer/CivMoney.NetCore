@@ -27,16 +27,8 @@ namespace CivMoney
 
         public void ConfigureServices(IServiceCollection services)
         {
-            if (Env.IsDevelopment())
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            }
-            else
-            {
-                services.AddDbContext<ApplicationDbContext>(options =>
-                    options.UseNpgsql(Environment.GetEnvironmentVariable("DATABASE_URL") + ";sslmode=Prefer;Trust Server Certificate=true"));
-            }
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(GetAndParsePostgresConnectionString()));
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
 
@@ -72,6 +64,27 @@ namespace CivMoney
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private string GetAndParsePostgresConnectionString()
+        {
+            string postgresConnectionUrl;
+
+            if (Env.IsDevelopment())
+            {
+                postgresConnectionUrl = Configuration.GetConnectionString("DefaultConnection");
+            }
+            else
+            {
+                postgresConnectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+            }
+
+            var isUri = Uri.TryCreate(postgresConnectionUrl, UriKind.Absolute, out var uri);
+
+            if (!isUri) throw new Exception($"'{postgresConnectionUrl}' is not a valid postgres URL to be parsed.");
+
+            return
+                $"Server={uri.Host};Port={uri.Port};User Id={uri.UserInfo.Split(':')[0]};Password={uri.UserInfo.Split(':')[1]};Database={uri.LocalPath.Substring(1)};sslmode=Prefer;Trust Server Certificate=true";
         }
 
         private static void UpdateDatabase(IApplicationBuilder app)
