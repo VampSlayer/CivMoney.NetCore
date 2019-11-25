@@ -1,8 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using CivMoney.Data;
-using CivMoney.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -11,6 +9,8 @@ using CivMoney.Services;
 using CivMoney.DataAccess;
 using CivMoney.DataAccess.Contracts;
 using System;
+using CivMoney.DataAccess.Models;
+using CivMoney.Services.Contracts;
 
 namespace CivMoney
 {
@@ -68,16 +68,9 @@ namespace CivMoney
 
         private string GetAndParsePostgresConnectionString()
         {
-            string postgresConnectionUrl;
-
-            if (Env.IsDevelopment())
-            {
-                postgresConnectionUrl = Configuration.GetConnectionString("DefaultConnection");
-            }
-            else
-            {
-                postgresConnectionUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-            }
+            var postgresConnectionUrl = Env.IsDevelopment()
+                ? Configuration.GetConnectionString("DefaultConnection")
+                : Environment.GetEnvironmentVariable("DATABASE_URL");
 
             var isUri = Uri.TryCreate(postgresConnectionUrl, UriKind.Absolute, out var uri);
 

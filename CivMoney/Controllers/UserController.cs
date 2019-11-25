@@ -1,30 +1,36 @@
-﻿using System.Security.Claims;
-using System.Threading.Tasks;
-using CivMoney.Models;
+﻿using System.Threading.Tasks;
+using CivMoney.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CivMoney.Controllers
 {
-    [Route("api/[controller]/[Action]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class UserController : ControllerBase
     {
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserHelper _userHelper;
 
-        public UserController(UserManager<ApplicationUser> userManager)
+        public UserController(IUserHelper userHelper)
         {
-            _userManager = userManager;
+            _userHelper = userHelper;
         }
 
-        public async Task<IActionResult> GetMeAsync()
+        [HttpGet]
+        public async Task<IActionResult> GetMe()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var user = await _userHelper.GetCurrentUserExternal();
 
             return Ok(user);
         }
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateMe([FromQuery] string currency)
+        {
+            await _userHelper.ChangeUserCurrency(currency);
+
+            return NoContent();
+        }
     }
-}
+} 

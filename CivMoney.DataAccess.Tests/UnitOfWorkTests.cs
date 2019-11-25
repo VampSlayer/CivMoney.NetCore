@@ -1,4 +1,3 @@
-using CivMoney.Data;
 using FluentAssertions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -21,7 +20,7 @@ namespace CivMoney.DataAccess.Tests
             var unitOfWork = new UnitOfWork(mockContext.Object);
 
             // assert
-            unitOfWork.TransactionsRespository.Should().NotBeNull();
+            unitOfWork.TransactionsRepository.Should().NotBeNull();
 
             // cleanup
             unitOfWork.Dispose();

@@ -1,5 +1,4 @@
-﻿using CivMoney.Models;
-using System;
+﻿using System;
 
 namespace CivMoney.DataAccess.Models
 {

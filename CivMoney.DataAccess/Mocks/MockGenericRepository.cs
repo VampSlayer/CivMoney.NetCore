@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CivMoney.DataAccess.Mocks
 {
-    public class MockGenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Entity
+    internal class MockGenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Entity
     {
         private readonly List<TEntity> _entities;
 

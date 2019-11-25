@@ -1,82 +1,47 @@
-﻿using CivMoney.Models;
+﻿using System.Threading.Tasks;
 using Google.Apis.Auth;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Security.Claims;
+using CivMoney.Services;
+using CivMoney.Services.Contracts;
 
 namespace CivMoney.Controllers
 {
-    [Route("api/[Action]")]
+    [Route("api/[action]")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserHelper _userHelper;
 
-        public AuthenticationController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public AuthenticationController( IUserHelper userHelper)
         {
-            _signInManager = signInManager;
-            _userManager = userManager;
+            _userHelper = userHelper;
         }
 
-        public async System.Threading.Tasks.Task<IActionResult> LoginAsync([FromQuery]string id_token)
+        [HttpPost]
+        public async Task<IActionResult> Login([FromQuery(Name = "id_token")] string idToken)
         {
             try
             {
-                var validPayload = await GoogleJsonWebSignature.ValidateAsync(id_token);
+                await _userHelper.CreateOrFindAndLoginUser(idToken);
 
-                var user = await _userManager.FindByEmailAsync(validPayload.Email);
-
-                if (user != null) {
-
-                    await _signInManager.SignInAsync(user, true);
-                    return NoContent();
-                }
-
-                var newUser = new ApplicationUser
-                {
-                    EmailConfirmed = true,
-                    Email = validPayload.Email,
-                    UserName = validPayload.Name.Replace(' ', '_'),
-                    Name = validPayload.Name,
-                    Currency = "$"
-                };
-
-                var userCreate = await _userManager.CreateAsync(newUser);
-
-                var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Email, newUser.Email),
-                        new Claim(ClaimTypes.Name, newUser.Name),
-                        new Claim(ClaimTypes.Role, "Administrator"),
-                    };
-
-                //var claimsIdentity = new ClaimsIdentity(
-                 //   claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var claimsAdd = await _userManager.AddClaimsAsync(newUser,claims);
-
-                //var claimsPrincipal = await _signInManager.CreateUserPrincipalAsync(newUser);
-
-                await _signInManager.SignInAsync(newUser, true);
-
-                ///_signInManager.
-
-                //await HttpContext.SignInAsync(
-                //   CookieAuthenticationDefaults.AuthenticationScheme,
-                //  claimsPrincipal);
                 return NoContent();
             }
             catch (InvalidJwtException)
             {
                 return Unauthorized();
             }
+            catch(UserCreationException)
+            {
+                return BadRequest("User failed to be created");
+            }
         }
 
-        public IActionResult Logout()
+        [HttpPost]
+        public async Task<IActionResult> Logout()
         {
-            return Ok("logout");
+            await _userHelper.LogoutCurrentUser();
+
+            return NoContent();
         }
     }
 }

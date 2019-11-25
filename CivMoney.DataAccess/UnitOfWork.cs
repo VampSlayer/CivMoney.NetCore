@@ -1,5 +1,4 @@
-﻿using CivMoney.Data;
-using CivMoney.DataAccess.Contracts;
+﻿using CivMoney.DataAccess.Contracts;
 using CivMoney.DataAccess.Models;
 using System;
 using System.Threading.Tasks;
@@ -12,25 +11,14 @@ namespace CivMoney.DataAccess
 
         private readonly ApplicationDbContext _context;
 
-        private GenericRepository<Transaction> transactions;
+        private GenericRepository<Transaction> _transactions;
 
         public UnitOfWork(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        public IGenericRepository<Transaction> TransactionsRespository
-        {
-            get
-            {
-                if (transactions == null)
-                {
-                    transactions = new GenericRepository<Transaction>(_context);
-                }
-
-                return transactions;
-            }
-        }
+        public IGenericRepository<Transaction> TransactionsRepository => _transactions ??= new GenericRepository<Transaction>(_context);
 
         public void Save()
         {

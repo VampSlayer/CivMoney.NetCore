@@ -8,33 +8,33 @@ namespace CivMoney.DataAccess
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Entity 
     {
-        internal IApplicationDbContext _context;
-        internal DbSet<TEntity> _dbSet;
+        internal IApplicationDbContext Context;
+        internal DbSet<TEntity> DbSet;
 
         public GenericRepository(IApplicationDbContext context)
         {
-            _context = context;
-            _dbSet = context.Set<TEntity>();
+            Context = context;
+            DbSet = context.Set<TEntity>();
         }
 
         public virtual IQueryable<TEntity> GetAll()
         {
-            return _dbSet;
+            return DbSet;
         }
 
         public virtual TEntity Find(int id)
         {
-            return _dbSet.Find(id);
+            return DbSet.Find(id);
         }
 
         public virtual void Add(TEntity entity)
         {
-            _dbSet.Add(entity);
+            DbSet.Add(entity);
         }
 
         public virtual void Add(IEnumerable<TEntity> entities)
         {
-            _dbSet.AddRange(entities);
+            DbSet.AddRange(entities);
         }
 
         public virtual void Delete(int id)
@@ -46,36 +46,36 @@ namespace CivMoney.DataAccess
 
         public virtual void Delete(TEntity entityToDelete)
         {
-            if (_context.IsDetached(entityToDelete))
+            if (Context.IsDetached(entityToDelete))
             {
-                _dbSet.Attach(entityToDelete);
+                DbSet.Attach(entityToDelete);
             }
 
-            _dbSet.Remove(entityToDelete);
+            DbSet.Remove(entityToDelete);
         }
 
         public virtual void Delete(IEnumerable<TEntity> entitiesToDelete)
         {
-            if (_context.IsDetached(entitiesToDelete))
+            if (Context.IsDetached(entitiesToDelete))
             {
-                _dbSet.AttachRange(entitiesToDelete);
+                DbSet.AttachRange(entitiesToDelete);
             }
 
-            _dbSet.RemoveRange(entitiesToDelete);
+            DbSet.RemoveRange(entitiesToDelete);
         }
 
         public virtual void Update(TEntity entityToUpdate)
         {
-            _dbSet.Attach(entityToUpdate);
+            DbSet.Attach(entityToUpdate);
 
-            _context.SetModified(entityToUpdate);
+            Context.SetModified(entityToUpdate);
         }
 
         public virtual void Update(IEnumerable<TEntity> entitiesToUpdate)
         {
-            _dbSet.AttachRange(entitiesToUpdate);
+            DbSet.AttachRange(entitiesToUpdate);
 
-            _context.SetModified(entitiesToUpdate);
+            Context.SetModified(entitiesToUpdate);
         }
     }
 }

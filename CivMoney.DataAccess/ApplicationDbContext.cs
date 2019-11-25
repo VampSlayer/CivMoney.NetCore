@@ -1,10 +1,9 @@
 ﻿using CivMoney.DataAccess.Contracts;
 using CivMoney.DataAccess.Models;
-using CivMoney.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace CivMoney.Data
+namespace CivMoney.DataAccess
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IApplicationDbContext
     {
@@ -17,6 +16,13 @@ namespace CivMoney.Data
         }
 
         public DbSet<Transaction> Transactions { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Transaction>().HasIndex(b => b.Description);
+
+            base.OnModelCreating(modelBuilder);
+        }
 
         public bool IsDetached(object entity)
         {

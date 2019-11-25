@@ -5,7 +5,7 @@ namespace CivMoney.DataAccess.Contracts
 {
     public interface IUnitOfWork
     {
-        IGenericRepository<Transaction> TransactionsRespository { get; }
+        IGenericRepository<Transaction> TransactionsRepository { get; }
         public void Save();
         public Task SaveAsync();
     }

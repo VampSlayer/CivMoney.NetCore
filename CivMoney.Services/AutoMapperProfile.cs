@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CivMoney.DataAccess.Models;
+using CivMoney.Services.Dtos;
 
 namespace CivMoney.Services
 {
@@ -8,6 +9,7 @@ namespace CivMoney.Services
         public AutoMapperProfile()
         {
             CreateMap<Transaction, TransactionDto>();
+            CreateMap<ApplicationUser, UserDto>();
         }
     }
 }

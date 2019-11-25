@@ -1,13 +1,10 @@
-﻿using CivMoney.DataAccess.Models;
-using Microsoft.AspNetCore.Identity;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
 
-namespace CivMoney.Models
+namespace CivMoney.DataAccess.Models
 {
     public class ApplicationUser : IdentityUser
     {
         public string Currency { get; set; }
         public string Name { get; set; }
-        public List<Transaction> Transactions { get; set; }
     }
 }
