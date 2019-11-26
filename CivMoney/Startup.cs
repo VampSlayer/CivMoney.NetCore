@@ -38,6 +38,9 @@ namespace CivMoney
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ITransactionService, TransactionService>();
+            services.AddTransient<ITotalsService, TotalsService>();
+
+            services.AddSingleton<IUserHelper, UserHelper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

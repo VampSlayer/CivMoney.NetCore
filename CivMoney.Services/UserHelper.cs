@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CivMoney.DataAccess.Models;
@@ -26,6 +27,11 @@ namespace CivMoney.Services
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _mapper = mapper;
+        }
+
+        public int GetCountOfUsers()
+        {
+            return _userManager.Users.Count();
         }
 
         public async Task<UserDto> GetCurrentUserExternal()

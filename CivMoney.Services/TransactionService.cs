@@ -50,14 +50,15 @@ namespace CivMoney.Services
 
             var numberOfDaysInMonth = DateTime.DaysInMonth(monthlyTransaction.Date.Year, monthlyTransaction.Date.Month);
 
-            for (var i = 1; i == numberOfDaysInMonth; i++)
+            for (var i = 1; i <= numberOfDaysInMonth; i++)
             {
                 transactions.Add(new Transaction
                 {
                     Amount = monthlyTransaction.Amount / numberOfDaysInMonth,
                     Description = monthlyTransaction.Description,
-                    Date = monthlyTransaction.Date,
-                    User = user
+                    Date = new DateTime(monthlyTransaction.Date.Year, monthlyTransaction.Date.Month, i),
+                    User = user,
+                    UserId = user.Id
                 });
             }
 
@@ -73,6 +74,7 @@ namespace CivMoney.Services
             var transaction = _mapper.Map<Transaction>(transactionDto);
 
             transaction.User = user;
+            transaction.UserId = user.Id;
 
             _unitOfWork.TransactionsRepository.Add(transaction);
 
@@ -87,6 +89,8 @@ namespace CivMoney.Services
                 .FirstOrDefault(x => x.UserId == user.Id && x.Id == id);
 
             _unitOfWork.TransactionsRepository.Delete(transaction);
+
+            await _unitOfWork.SaveAsync();
         }
     }
 }

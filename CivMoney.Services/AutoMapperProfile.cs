@@ -8,6 +8,7 @@ namespace CivMoney.Services
     {
         public AutoMapperProfile()
         {
+            CreateMap<TransactionDto, Transaction>();
             CreateMap<Transaction, TransactionDto>();
             CreateMap<ApplicationUser, UserDto>();
         }

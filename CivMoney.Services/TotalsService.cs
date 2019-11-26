@@ -9,7 +9,7 @@ using CivMoney.Services.Dtos;
 
 namespace CivMoney.Services
 {
-    public class TotalsService
+    public class TotalsService : ITotalsService
     {
         private readonly IUserHelper _userHelper;
         private readonly IUnitOfWork _unitOfWork;

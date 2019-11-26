@@ -6,6 +6,7 @@ namespace CivMoney.Services.Contracts
 {
     public interface IUserHelper
     {
+        int GetCountOfUsers();
         Task<UserDto> GetCurrentUserExternal();
         Task<ApplicationUser> GetCurrentUser();
         Task LogoutCurrentUser();

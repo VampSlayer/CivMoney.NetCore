@@ -8,11 +8,11 @@ namespace CivMoney.DataAccess.Mocks
     public class MockUnitOfWork : IUnitOfWork
     {
         public IGenericRepository<Transaction> TransactionsRepository { get; }
-        public List<Transaction> Transaction { get; }
+        public List<Transaction> Transactions { get; }
 
         public MockUnitOfWork(List<Transaction> transactions)
         {
-            Transaction = transactions;
+            Transactions = transactions;
 
             TransactionsRepository = new MockGenericRepository<Transaction>(transactions);
         }
