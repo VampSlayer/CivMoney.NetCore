@@ -32,14 +32,14 @@ namespace CivMoney.Services
                 .Select(x => _mapper.Map<TransactionDto>(x));
         }
 
-        public async Task<IEnumerable<TransactionDto>> GetTransactionsForRange(DateTime start, DateTime end)
+        public async Task<IEnumerable<TransactionRangeDto>> GetTransactionsForRange(DateTime start, DateTime end)
         {
             var user = await _userHelper.GetCurrentUser();
 
             return _unitOfWork.TransactionsRepository.GetAll()
                 .Where(x => x.UserId == user.Id && x.Date.Date >= start.Date && x.Date.Date <= end.Date)
                 .OrderBy(x => x.Date)
-                .Select(x => _mapper.Map<TransactionDto>(x));
+                .Select(x => _mapper.Map<TransactionRangeDto>(x));
         }
 
         public async Task AddMonthlyFixedTransaction(TransactionDto monthlyTransaction)

@@ -8,8 +8,8 @@ namespace CivMoney.Services.Contracts
     public interface ITransactionService
     {
         Task<IEnumerable<TransactionDto>> GetTransactionsForDate(DateTime date);
+        Task<IEnumerable<TransactionRangeDto>> GetTransactionsForRange(DateTime start, DateTime end);
         Task AddTransaction(TransactionDto transactionDto);
-        Task<IEnumerable<TransactionDto>> GetTransactionsForRange(DateTime start, DateTime end);
         Task AddMonthlyFixedTransaction(TransactionDto monthlyTransaction);
         Task DeleteTransaction(int id);
     }

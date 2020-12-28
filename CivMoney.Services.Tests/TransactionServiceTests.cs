@@ -98,9 +98,9 @@ namespace CivMoney.Services.Tests
             
             // assert
             result.Should().HaveCount(2);
-            result.First().Id.Should().Be(1);
+            result.First().Delete.Should().Be(1);
             result.First().Date.Should().Be(new DateTime(2000, 01, 01));
-            result.ToArray()[1].Id.Should().Be(2);
+            result.ToArray()[1].Delete.Should().Be(2);
             result.ToArray()[1].Date.Should().Be(new DateTime(2000, 01, 31));
         }
 

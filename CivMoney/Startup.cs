@@ -27,7 +27,6 @@ namespace CivMoney
 
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(GetAndParsePostgresConnectionString()));
 
             services.AddAutoMapper(typeof(AutoMapperProfile));
@@ -39,25 +38,20 @@ namespace CivMoney
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<ITransactionService, TransactionService>();
             services.AddTransient<ITotalsService, TotalsService>();
-
-            services.AddSingleton<IUserHelper, UserHelper>();
+            services.AddTransient<IUserHelper, UserHelper>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
 
-            if (env.IsDevelopment())
-            {              
-                app.UseDatabaseErrorPage();
-            }
-            else
+            if (!env.IsDevelopment())
             {
                 app.UseHsts();
                 app.UseHttpsRedirection();
-                UpdateDatabase(app);
             }
 
+            UpdateDatabase(app);
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();
