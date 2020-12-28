@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using CivMoney.DataAccess.Contracts;
 using CivMoney.Services.Contracts;
 using CivMoney.Services.Dtos;
@@ -14,7 +13,7 @@ namespace CivMoney.Services
         private readonly IUserHelper _userHelper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public StatisticsService(IUserHelper userHelper, IUnitOfWork unitOfWork\)
+        public StatisticsService(IUserHelper userHelper, IUnitOfWork unitOfWork)
         {
             _userHelper = userHelper;
             _unitOfWork = unitOfWork;
